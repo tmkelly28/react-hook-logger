@@ -35,6 +35,7 @@ class NewsFeed extends React.Component {
             })
           }
         </ul>
+        { this.props.children }
       </div>
     );
   }
