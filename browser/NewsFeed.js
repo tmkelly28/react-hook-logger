@@ -1,44 +1,22 @@
 import React from 'react';
+import { Link } from 'react-router';
+import WriteStory from './WriteStory';
 
-const newsFeedArr = [
-  'You won\'t believe this thing',
-  'Ten things you are doing wrong',
-  'Check out my stuff'
-];
+export default function NewsFeed (props) {
 
-class NewsFeed extends React.Component {
+  const stories = props.newsFeed;
 
-  constructor (props) {
-    super(props);
-    this.state = {
-      newsFeedArr: []
-    };
-  }
-
-  componentDidMount () {
-    Promise.resolve()
-      .then(() => {
-        this.setState({
-          newsFeedArr: newsFeedArr
-        });
-      });
-  }
-
-  render () {
-    return (
-      <div>
-        <h3>News Feed</h3>
-        <ul>
-          {
-            this.state.newsFeedArr.map((newsStory, idx) => {
-              return <li key={idx}>{ newsStory }</li>
-            })
-          }
-        </ul>
-        { this.props.children }
-      </div>
-    );
-  }
+  return (
+    <div>
+      <h3>News Feed</h3>
+      <ul>
+        {
+          stories.map(story => {
+            return <Link key={story.id} to={`/news/${story.id}`} style={{display:'block'}}>{ story.text }</Link>
+          })
+        }
+      </ul>
+      {/* <WriteStory /> */}
+    </div>
+  );
 }
-
-export default NewsFeed;
