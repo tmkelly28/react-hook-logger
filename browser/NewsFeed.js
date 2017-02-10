@@ -1,22 +1,43 @@
 import React from 'react';
 import { Link } from 'react-router';
-import WriteStory from './WriteStory';
+import Form from './Form';
+import { diff } from './utils';
 
-export default function NewsFeed (props) {
+export default class NewsFeed extends React.Component {
 
-  const stories = props.newsFeed;
+  componentWillMount () {
+    console.log('NewsFeed: componentWillMount');
+  }
 
-  return (
-    <div>
-      <h3>News Feed</h3>
-      <ul>
-        {
-          stories.map(story => {
-            return <Link key={story.id} to={`/news/${story.id}`} style={{display:'block'}}>{ story.text }</Link>
-          })
-        }
-      </ul>
-      {/* <WriteStory /> */}
-    </div>
-  );
+  componentDidMount () {
+    console.log('NewsFeed: componentDidMount');
+  }
+
+  componentWillReceiveProps (nextProps) {
+    console.log('NewsFeed: componentWillReceiveProps', 'Here\'s what changed:', diff(this.props, nextProps));
+  }
+
+  componentWillUnmount () {
+    console.log('NewsFeed: componentWillUnmount');
+  }
+
+  render () {
+    console.log('NewsFeed: render');
+
+    const stories = this.props.newsFeed;
+
+    return (
+      <div>
+        <h3>News Feed</h3>
+        <ul>
+          {
+            stories.map(story => {
+              return <Link key={story.id} to={`/news/${story.id}`} style={{display:'block'}}>{ story.text }</Link>
+            })
+          }
+        </ul>
+        <Form />
+      </div>
+    );
+  }
 }

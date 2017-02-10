@@ -1,4 +1,5 @@
 import React from 'react';
+import { diff } from './utils';
 
 const newsFeed = [
   { id: 1, text: 'Cody just changed his status: "My favorite food is pizza!"' },
@@ -17,17 +18,47 @@ export default class Main extends React.Component {
     this.showStory= this.showStory.bind(this);
   }
 
-  componentDidMount () {
-    // pretend this is axios.get...
-    Promise.resolve().then(() => this.setState({ newsFeed }));
+  componentWillMount () {
+    console.log('Main: componentWillMount');
   }
+
+  componentDidMount () {
+    console.log('Main: componentDidMount');
+    // setting state asynchronously in componentDidMount
+    // to simulate a network call!
+    setTimeout(() => {
+      console.log('--------------------------------------');
+      console.log('about to set state with the news feed!');
+
+      this.setState({ newsFeed }, () => {
+        console.log('done setting state with the news feed');
+        console.log('--------------------------------------');
+      });
+    });
+  }
+
+  componentWillReceiveProps (nextProps) {
+    console.log('Main: componentWillReceiveProps', 'Here\'s what changed:', diff(this.props, nextProps));
+  }
+
+  componentWillUnmount () {
+    console.log('Main: componentWillUnmount');
+  }
+
 
   showStory (storyId) {
     const selectedStory = this.state.newsFeed.filter(story => story.id === storyId)[0] || {};
-    this.setState({ selectedStory});
+    console.log('--------------------------------------');
+    console.log('about to setState with the selected story');
+    this.setState({ selectedStory}, () => {
+      console.log('done setting state with the selected story');
+    console.log('--------------------------------------');
+    });
   }
 
   render () {
+    console.log('Main: render');
+
     const children = this.props.children;
 
     return (
