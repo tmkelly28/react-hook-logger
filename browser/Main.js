@@ -4,8 +4,8 @@ import Logger from './Logger';
 
 class Main extends React.Component {
 
-  constructor (props) {
-    super(props);
+  constructor () {
+    super();
     this.state = {
       newsFeed: [],
       selectedStory: {}
@@ -13,29 +13,27 @@ class Main extends React.Component {
     this.showStory= this.showStory.bind(this);
   }
 
+  setStateAndLog (field, data) {
+    console.log('--------------------------------------');
+    console.log(`about to set state on ${field}`);
+    this.setState({ [field]: data }, () => {
+      console.log(`done setting state on ${field}`);
+      console.log('--------------------------------------');
+    });
+  }
 
   componentDidMount () {
-    // setting state asynchronously in componentDidMount
-    // to simulate a network call!
     axios.get('/api/news')
       .then(res => res.data)
-      .then(newsFeed => {
-        console.log('--------------------------------------');
-        console.log('about to set state with the news feed!');
-        this.setState({ newsFeed });
-        console.log('done setting state with the news feed');
-        console.log('--------------------------------------');
-      });
+      .then(newsFeed =>
+        this.setStateAndLog('newsFeed', newsFeed));
   }
 
   showStory (storyId) {
-    const selectedStory = this.state.newsFeed.filter(story => story.id === storyId)[0] || {};
-    console.log('--------------------------------------');
-    console.log('about to setState with the selected story');
-    this.setState({ selectedStory}, () => {
-      console.log('done setting state with the selected story');
-    console.log('--------------------------------------');
-    });
+    axios.get(`/api/news/${storyId}`)
+      .then(res => res.data)
+      .then(selectedStory =>
+        this.setStateAndLog('selectedStory', selectedStory));
   }
 
   render () {

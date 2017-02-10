@@ -1,6 +1,8 @@
+import { colorByComponent } from './config';
+
 // obj1 is the original/previous object
 // obj2 is the new object we're searching for changes on
-export const diff = (obj1, obj2) => {
+const diff = (obj1, obj2) => {
   const rtnObj = {};
 
   // check for values on obj1 that are different in obj2 (including key-value pairs that have been removed)
@@ -17,6 +19,8 @@ export const diff = (obj1, obj2) => {
   return rtnObj;
 };
 
+const components = ['Form', 'Main', 'NewsFeed', 'Routes', 'Story'];
+
 const yellow = '#cada55'; // componentWillReceiveProps
 const red = '#cd5c5c'; // componentWillUnmount
 
@@ -27,9 +31,19 @@ const blue = '#3498db'; // render
 const lightpurple = '#884EA0'; // onEnter
 const purple = '#8E44AD'; // onLeave
 
-const log = (component, hook, color) => window.console.log(`%c${component}: ${hook}`, `color:${color}`);
+const colors = [yellow, red, seagreen, green, blue, lightpurple, purple];
+const componentMap = components.reduce((map, component, idx) =>
+  Object.assign(map, { [component]: colors[idx] }), {});
 
-export const logComponentWillReceiveProps = component => log(component, 'componentWillReceiveProps', yellow);
+const log = (component, hook, color) => {
+  if (colorByComponent) window.console.log(`%c${component}: ${hook}`, `color:${componentMap[component]}`);
+  else window.console.log(`%c${component}: ${hook}`, `color:${color}`);
+};
+
+export const logComponentWillReceiveProps = (component, oldProps, newProps) => {
+  log(component, 'componentWillReceiveProps', yellow);
+  console.log(`%c Here\'s what changed:${diff(oldProps, newProps)}`, `color:${yellow}`);
+};
 export const logComponentWillUnmount = component => log(component, 'componentWillUnmount', red);
 export const logComponentWillMount = component => log(component, 'componentWillMount', seagreen);
 export const logComponentDidMount = component => log(component, 'componentDidMount', green);

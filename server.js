@@ -8,9 +8,17 @@ const storiesInDatabase = [
 ];
 
 app.use((req, res, next) => console.log(req.method, req.url) || next());
+
 app.use(express.static(path.join(__dirname, './public')));
+
 app.get('/api/news', (req, res, next) => {
   res.json(storiesInDatabase);
 });
+
+app.get('/api/news/:newsId', (req, res, next) => {
+  res.json(storiesInDatabase[+req.params.newsId - 1]);
+});
+
 app.get('/*', (req, res, next) => res.send(path.join(__dirname, './public/index.html')));
+
 app.listen(3000, () => console.log('listening on 3000'));

@@ -4,8 +4,7 @@ import {
   logComponentWillMount,
   logComponentWillUnmount,
   logComponentWillReceiveProps,
-  logRender,
-  diff
+  logRender
 } from './utils';
 
 export default (InnerComponent, name) =>
@@ -20,8 +19,7 @@ export default (InnerComponent, name) =>
     }
 
     componentWillReceiveProps (nextProps) {
-      logComponentWillReceiveProps(name);
-      console.log('Here\'s what changed:', diff(this.props, nextProps));
+      logComponentWillReceiveProps(name, this.props, nextProps);
     }
 
     componentWillUnmount () {
