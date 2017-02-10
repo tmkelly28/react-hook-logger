@@ -16,3 +16,27 @@ export const diff = (obj1, obj2) => {
   if (Object.keys(rtnObj).length === 0) return 'No change';
   return rtnObj;
 };
+
+const yellow = '#cada55'; // componentWillReceiveProps
+const red = '#cd5c5c'; // componentWillUnmount
+
+const seagreen = '#1ABC9C'; // componentWillMount
+const green = '#27AE60' // componentDidMount
+const blue = '#3498db'; // render
+
+const lightpurple = '#884EA0'; // onEnter
+const purple = '#8E44AD'; // onLeave
+
+const log = (component, hook, color) => window.console.log(`%c${component}: ${hook}`, `color:${color}`);
+
+export const logComponentWillReceiveProps = component => log(component, 'componentWillReceiveProps', yellow);
+export const logComponentWillUnmount = component => log(component, 'componentWillUnmount', red);
+export const logComponentWillMount = component => log(component, 'componentWillMount', seagreen);
+export const logComponentDidMount = component => log(component, 'componentDidMount', green);
+export const logRender = component => log(component, 'render', blue);
+export const logOnEnter = component => log(component, 'onEnter', lightpurple);
+export const logOnLeave = component => {
+  console.log('--------------------------------------');
+  log(component, 'onLeave', purple);
+};
+

@@ -1,12 +1,8 @@
 import React from 'react';
-import { diff } from './utils';
+import axios from 'axios';
+import Logger from './Logger';
 
-const newsFeed = [
-  { id: 1, text: 'Cody just changed his status: "My favorite food is pizza!"' },
-  { id: 2, text: 'Cody just liked this post: "How to guilt humans into giving you more snacks"' }
-];
-
-export default class Main extends React.Component {
+class Main extends React.Component {
 
   constructor (props) {
     super(props);
@@ -14,37 +10,23 @@ export default class Main extends React.Component {
       newsFeed: [],
       selectedStory: {}
     };
-
     this.showStory= this.showStory.bind(this);
   }
 
-  componentWillMount () {
-    console.log('Main: componentWillMount');
-  }
 
   componentDidMount () {
-    console.log('Main: componentDidMount');
     // setting state asynchronously in componentDidMount
     // to simulate a network call!
-    setTimeout(() => {
-      console.log('--------------------------------------');
-      console.log('about to set state with the news feed!');
-
-      this.setState({ newsFeed }, () => {
+    axios.get('/api/news')
+      .then(res => res.data)
+      .then(newsFeed => {
+        console.log('--------------------------------------');
+        console.log('about to set state with the news feed!');
+        this.setState({ newsFeed });
         console.log('done setting state with the news feed');
         console.log('--------------------------------------');
       });
-    });
   }
-
-  componentWillReceiveProps (nextProps) {
-    console.log('Main: componentWillReceiveProps', 'Here\'s what changed:', diff(this.props, nextProps));
-  }
-
-  componentWillUnmount () {
-    console.log('Main: componentWillUnmount');
-  }
-
 
   showStory (storyId) {
     const selectedStory = this.state.newsFeed.filter(story => story.id === storyId)[0] || {};
@@ -57,8 +39,6 @@ export default class Main extends React.Component {
   }
 
   render () {
-    console.log('Main: render');
-
     const children = this.props.children;
 
     return (
@@ -72,5 +52,6 @@ export default class Main extends React.Component {
       </div>
     );
   }
-
 }
+
+export default Logger(Main, 'Main');

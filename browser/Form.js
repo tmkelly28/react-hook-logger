@@ -1,27 +1,9 @@
 import React from 'react';
-import { diff } from './utils';
+import Logger from './Logger'
 
-export default class WriteStory extends React.Component {
-
-  componentWillMount () {
-    console.log('Form: componentWillMount');
-  }
-
-  componentDidMount () {
-    console.log('Form: componentDidMount');
-  }
-
-  componentWillReceiveProps (nextProps) {
-    console.log('Form: componentWillReceiveProps', 'Here\'s what changed:', diff(this.props, nextProps));
-  }
-
-  componentWillUnmount () {
-    console.log('Form: componentWillUnmount');
-  }
+class Form extends React.Component {
 
   render () {
-    console.log('Form: render');
-
     return (
       <form>
         <div className="form-group">
@@ -35,3 +17,5 @@ export default class WriteStory extends React.Component {
     );
   }
 }
+
+export default Logger(Form, 'Form');

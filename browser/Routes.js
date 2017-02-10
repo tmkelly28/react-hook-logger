@@ -3,7 +3,8 @@ import NewsFeed from './NewsFeed';
 import Story from './Story';
 import Main from './Main';
 import { Router, Route, hashHistory, IndexRoute, Link } from 'react-router';
-import { diff } from './utils';
+import { logOnEnter, logOnLeave, } from './utils';
+import Logger from './Logger';
 
 // helper function - just because we're playing around doesn't mean we shouldn't be DRY!
 const routeLog = (path, direction) => {
@@ -12,23 +13,6 @@ const routeLog = (path, direction) => {
 };
 
 class Routes extends React.Component {
-
-  componentWillMount () {
-    console.log('Routes: componentWillMount');
-  }
-
-  componentDidMount () {
-    console.log('Routes: componentDidMount');
-  }
-
-  componentWillReceiveProps (nextProps) {
-    console.log('Routes: componentWillReceiveProps', "Here's what changed: ", diff(this.props, nextProps));
-  }
-
-  componentWillUnmount () {
-    console.log('Routes: componentWillUnmount');
-  }
-
   render () {
     return (
       <div>
@@ -36,22 +20,22 @@ class Routes extends React.Component {
           <Route
             path="/"
             component={Main}
-            onEnter={() => routeLog('/', 'Enter')}
-            onLeave={() => routeLog('/', 'Leave')}>
+            onEnter={() => logOnEnter('/')}
+            onLeave={() => logOnLeave('/')}>
             <Route
               path="news"
               component={NewsFeed}
-              onEnter={() => routeLog('/news', 'Enter')}
-              onLeave={() => routeLog('/news', 'Leave')}/>
+              onEnter={() => logOnEnter('/news')}
+              onLeave={() => logOnLeave('/news')}/>
             <Route
               path="news/:storyId"
               component={Story}
-              onEnter={() => routeLog('/news/:storyId', 'Enter')}
-              onLeave={() => routeLog('/news/:storyId', 'Leave')}/>
+              onEnter={() => logOnEnter('/news/:storyId')}
+              onLeave={() => logOnLeave('/news/:storyId')}/>
             <IndexRoute
               component={NewsFeed}
-              onEnter={() => routeLog('IndexRoute', 'Enter')}
-              onLeave={() => routeLog('IndexRoute', 'Leave')}/>
+              onEnter={() => logOnEnter('IndexRoute')}
+              onLeave={() => logOnLeave('IndexRoute')}/>
           </Route>
         </Router>
       </div>
@@ -59,4 +43,4 @@ class Routes extends React.Component {
   }
 }
 
-export default Routes;
+export default Logger(Routes, 'Routes');
