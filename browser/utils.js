@@ -42,7 +42,8 @@ const log = (component, hook, color) => {
 
 export const logComponentWillReceiveProps = (component, oldProps, newProps) => {
   log(component, 'componentWillReceiveProps', yellow);
-  console.log(`%c Here\'s what changed:${diff(oldProps, newProps)}`, `color:${yellow}`);
+  console.log(`%c Here\'s what changed:`, `color:${yellow}`);
+  console.log(diff(oldProps, newProps));
 };
 export const logComponentWillUnmount = component => log(component, 'componentWillUnmount', red);
 export const logComponentWillMount = component => log(component, 'componentWillMount', seagreen);
